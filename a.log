@@ -1,0 +1,81 @@
+i 0
+error [[ 4.03639037]]
+true [array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.37307479]]), array([[ 0.37980606]]), array([[ 0.41643487]]), array([[ 0.44051165]]), array([[ 0.41770996]]), array([[ 0.39011992]]), array([[ 0.38973519]]), array([[ 0.40919272]])]
+i 1000
+error [[ 3.89572046]]
+true [array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.38399281]]), array([[ 0.34621283]]), array([[ 0.38355957]]), array([[ 0.31014448]]), array([[ 0.37621105]]), array([[ 0.43710147]]), array([[ 0.31421743]]), array([[ 0.46880163]])]
+i 2000
+error [[ 4.2391965]]
+true [array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.57662969]]), array([[ 0.63136663]]), array([[ 0.49698886]]), array([[ 0.63885531]]), array([[ 0.58680219]]), array([[ 0.56973349]]), array([[ 0.64531512]]), array([[ 0.50429455]])]
+i 3000
+error [[ 4.23225603]]
+true [array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.5149943]]), array([[ 0.48970163]]), array([[ 0.66462439]]), array([[ 0.48224693]]), array([[ 0.61485847]]), array([[ 0.65403683]]), array([[ 0.60848766]]), array([[ 0.57249479]])]
+i 4000
+error [[ 2.25638339]]
+true [array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.73255884]]), array([[ 0.55504687]]), array([[ 0.50172576]]), array([[ 0.10818399]]), array([[ 0.8030854]]), array([[ 0.78448207]]), array([[ 0.68940986]]), array([[ 0.21105668]])]
+i 5000
+error [[ 0.66202213]]
+true [array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.89225548]]), array([[ 0.10683293]]), array([[ 0.12692094]]), array([[ 0.94921138]]), array([[ 0.91614895]]), array([[ 0.05239182]]), array([[ 0.92614285]]), array([[ 0.05963511]])]
+i 6000
+error [[ 0.53615702]]
+true [array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.92955005]]), array([[ 0.90230661]]), array([[ 0.90196153]]), array([[ 0.06892711]]), array([[ 0.95946734]]), array([[ 0.94579384]]), array([[ 0.93052629]]), array([[ 0.03683556]])]
+i 7000
+error [[ 0.30285295]]
+true [array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.05991398]]), array([[ 0.04212698]]), array([[ 0.96236528]]), array([[ 0.03112973]]), array([[ 0.03109675]]), array([[ 0.03147881]]), array([[ 0.9662028]]), array([[ 0.03567476]])]
+i 8000
+error [[ 0.26735127]]
+true [array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.05085603]]), array([[ 0.97436358]]), array([[ 0.02110391]]), array([[ 0.04961941]]), array([[ 0.97942876]]), array([[ 0.0285336]]), array([[ 0.05083633]]), array([[ 0.97980567]])]
+i 9000
+error [[ 0.21414202]]
+true [array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.96455122]]), array([[ 0.03993492]]), array([[ 0.02307572]]), array([[ 0.01757548]]), array([[ 0.97238849]]), array([[ 0.97554505]]), array([[ 0.02422584]]), array([[ 0.0218148]])]
+i 10000
+error [[ 0.28219884]]
+true [array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.96785031]]), array([[ 0.02541108]]), array([[ 0.96493963]]), array([[ 0.03741193]]), array([[ 0.04465402]]), array([[ 0.04717194]]), array([[ 0.9585171]]), array([[ 0.98114308]])]
+i 11000
+error [[ 0.18772341]]
+true [array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.02115197]]), array([[ 0.03357442]]), array([[ 0.96414884]]), array([[ 0.98336567]]), array([[ 0.97727656]]), array([[ 0.01651608]]), array([[ 0.97624166]]), array([[ 0.01751367]])]
+i 12000
+error [[ 0.1754359]]
+true [array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.03211842]]), array([[ 0.02644975]]), array([[ 0.97992313]]), array([[ 0.9779826]]), array([[ 0.01547161]]), array([[ 0.98161591]]), array([[ 0.97391866]]), array([[ 0.01483641]])]
+i 13000
+error [[ 0.14619915]]
+true [array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.01844019]]), array([[ 0.97470175]]), array([[ 0.0181705]]), array([[ 0.98169139]]), array([[ 0.01584994]]), array([[ 0.01783865]]), array([[ 0.01279154]]), array([[ 0.98049854]])]
+i 14000
+error [[ 0.1894465]]
+true [array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.01737592]]), array([[ 0.97669248]]), array([[ 0.01814126]]), array([[ 0.02611281]]), array([[ 0.96941709]]), array([[ 0.02843906]]), array([[ 0.03384052]]), array([[ 0.9883535]])]
+i 15000
+error [[ 0.19055649]]
+true [array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.01600735]]), array([[ 0.97281865]]), array([[ 0.97155419]]), array([[ 0.97199078]]), array([[ 0.0245253]]), array([[ 0.02856146]]), array([[ 0.02460299]]), array([[ 0.98677701]])]
+i 16000
+error [[ 0.18024592]]
+true [array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8)]
+pred [array([[ 0.01576076]]), array([[ 0.02577371]]), array([[ 0.02280178]]), array([[ 0.02479852]]), array([[ 0.02600783]]), array([[ 0.02574434]]), array([[ 0.0271974]]), array([[ 0.98783841]])]
+i 17000
+error [[ 0.12603441]]
+true [array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.01464042]]), array([[ 0.0237867]]), array([[ 0.02328221]]), array([[ 0.98968725]]), array([[ 0.01288232]]), array([[ 0.98622483]]), array([[ 0.01348526]]), array([[ 0.01386956]])]
+i 18000
+error [[ 0.11636378]]
+true [array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.02354767]]), array([[ 0.98613434]]), array([[ 0.98430055]]), array([[ 0.98638153]]), array([[ 0.01054217]]), array([[ 0.98535958]]), array([[ 0.98651495]]), array([[ 0.01096488]])]
+i 19000
+error [[ 0.12237809]]
+true [array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[1]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8), array([[0]], dtype=uint8)]
+pred [array([[ 0.02221189]]), array([[ 0.01927078]]), array([[ 0.9884305]]), array([[ 0.98176184]]), array([[ 0.984593]]), array([[ 0.01104744]]), array([[ 0.01200443]]), array([[ 0.01262889]])]
+finished
