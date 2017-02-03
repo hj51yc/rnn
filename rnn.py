@@ -9,7 +9,7 @@ def dev_sigmoid(a):
     return a*(1-a)
 
 class RNN(object):
-    
+
     def __init__(self, input_dim, out_dim, hiden_dim, alpha=0.01):
         self.input_dim = input_dim
         self.out_dim = out_dim
@@ -21,7 +21,7 @@ class RNN(object):
         self.bias_y = np.random.random((1, out_dim))
         self.alpha = alpha
 
-    
+
     def train(self, inputs, outputs):
         for i in xrange(len(inputs)):
             input = inputs[i]
@@ -30,8 +30,8 @@ class RNN(object):
             if i % 100 == 0:
                 print 'error', error
             self.backward(input, output)
-    
-    
+
+
     def train_once(self, input, output):
         error, pred = self.forward(input, output)
         self.backforward(input, output)
@@ -78,8 +78,8 @@ class RNN(object):
             h_cur = self.h_list[t + 1]
             h_prev = self.h_list[t]
             theta_y_t = self.theta_y_list[t]
-            part_1 = (np.dot(self.Why, theta_y_t.T) + np.dot(self.Whh, h_theta_next.T)).T 
-            theta_h_t = part_1 * dev_sigmoid(h_cur) 
+            part_1 = (np.dot(self.Why, theta_y_t.T) + np.dot(self.Whh, h_theta_next.T)).T
+            theta_h_t = part_1 * dev_sigmoid(h_cur)
             h_theta_next = theta_h_t
             #print 'part_1.shape', part_1.shape
             #print 'theta_h_t.shape', theta_h_t.shape
@@ -96,7 +96,7 @@ class RNN(object):
             d_Wxh += np.dot(x.T, theta_h_t)
             d_bias_h += theta_h_t
             d_bias_y += theta_y_t
-        
+
         self.Whh -= d_Whh * self.alpha
         self.Wxh -= d_Wxh * self.alpha
         self.Why -= d_Why * self.alpha
@@ -115,7 +115,7 @@ if __name__ == '__main__':
     binary_dim = 8
     largest_number = pow(2,binary_dim)
     binary_codes = np.unpackbits(np.array([range(largest_number)],dtype=np.uint8).T,axis=1)
-    
+
     for i in xrange(20000):
         a_int = np.random.randint(largest_number/2)
         b_int = np.random.randint(largest_number/2)
@@ -138,6 +138,6 @@ if __name__ == '__main__':
             print 'error', error
             print 'true', output
             print 'pred', pred
-    
+
     print 'finished'
 
