@@ -1,6 +1,7 @@
 
 import sys, os
 import numpy as np
+np.seterr(all='raise')
 
 def sigmoid(a):
     return 1.0/(1+np.exp(-a))
@@ -63,8 +64,9 @@ class LSTM(object):
         
         gen_indexes = []
         for k in xrange(stop_len):
-            index = np.random.choice(range(len(prob[0])), p=prob.ravel())
-            #index = np.argmax(prob[0])
+            #index = np.random.choice(range(len(prob[0])), p=prob.ravel())
+            #print 'prob', prob
+            index = np.argmax(prob[0])
             gen_x = np.zeros(len(prob[0]))
             gen_x[index] = 1
             gen_indexes.append(index)
@@ -81,7 +83,7 @@ class LSTM(object):
         #print 'x:', x
         #print 'h_prev:', h_prev
         X = np.hstack((h_prev, x.reshape(1, len(x))))
-        
+       
         hi = sigmoid(np.dot(X, self.Wi) + self.bi)
         hf = sigmoid(np.dot(X, self.Wf) + self.bf)
         ho = sigmoid(np.dot(X, self.Wo) + self.bo)
@@ -96,28 +98,32 @@ class LSTM(object):
         state = (h, c)
         return prob, state, cache
 
+    def grad_clip(self, dw, rescale=5.0):
+        norm = np.sum(np.abs(dw))
+        return dw / norm
 
     def backward(self, prob, y_label, d_next, cache):
         hi, hf, ho, hc, h, c, y, c_prev, h_prev, X = cache
-        dc_next, dh_next = d_next
+        dh_next, dc_next = d_next
 
         ## softmax loss gradient
         dy = prob.copy()
 
-        #print 'dy:', dy
-        #print 'y_label', y_label
-
         y_index = np.argmax(y_label)
         dy[0, y_index] -= 1
-
+        #print 'the dy:', dy
+        
         dWy = np.dot(h.T, dy)
         dby = dy
-        
+        #print 'the dWy', dWy
+
         # Note we're adding dh_next here, because h is forward in next_step and make output y here: h is splited here!
         dh = np.dot(dy, self.Wy.T) + dh_next
+        #print 'the dh', dh
         
         dho = tanh(c) * dh
         dho = dsigmoid(ho) * dho
+        #print 'the dho', dho
         
         # Gradient for c in h = ho * tanh(c), note we're adding dc_next here! 
         #dc = ho * dh + dc_next
@@ -125,19 +131,26 @@ class LSTM(object):
         
         ## i change dc below
         dc = dh * ho * dtanh(c) + dc_next
+        #print 'the dc', dc
 
         dhc = hi * dc
         dhc = dhc * dtanh(hc)
+        #print 'the dhc', dhc
 
         dhf = c_prev * dc
         dhf = dsigmoid(hf) * dhf
+        #print 'the dhf', dhf
 
         dhi = hc * dc
         dhi = dsigmoid(hi) * dhi
+        #print 'the dhi', dhi
 
         dWf = np.dot(X.T , dhf)
         dbf = dhf
         dXf = np.dot(dhf, self.Wf.T)
+        #print 'the X.T', X.T
+        #print 'the dWf', dWf
+        #print 'the dbf', dbf
 
         dWi = np.dot(X.T, dhi)
         dbi = dhi
@@ -153,12 +166,16 @@ class LSTM(object):
 
         dX = dXf + dXi + dXo + dXc
         new_dh_next = dX[:, :self.H]
-        
+        new_dh_next = self.grad_clip(new_dh_next)
+        #print "the dh_next", new_dh_next
+
         # Gradient for c_old in c = hf * c_old + hi * hc
         new_dc_next = hf * dc
+        new_dc_next = self.grad_clip(new_dc_next)
+        #print 'the dc_next', new_dc_next
 
         grad = dict(Wf=dWf, Wi=dWi, Wo=dWo, Wc=dWc, bf=dbf, bi=dbi, bc=dbc, bo=dbo, by=dby)
-        new_d_next = (new_dc_next, new_dh_next) 
+        new_d_next = (new_dh_next, new_dc_next) 
 
         return new_d_next, grad
 
@@ -197,13 +214,21 @@ class LSTM(object):
         for w_name in grads:
             W = getattr(self, w_name)
             dW = grads[w_name]
-            square_dW = dW * dW
+            try:
+                square_dW = dW * dW
+            except:
+                print 'overflow dW', w_name
+                print 'overflow dW', dW
+                for t in grads:
+                    print 'w', t, getattr(self, t)
+                    print 'dw', t, grads[t]
+                raise
             if w_name in self.adagrads_sum:
                 self.adagrads_sum[w_name] += square_dW
             else:
                 self.adagrads_sum[w_name] = square_dW + epsilon
 
-            W_step = eta / np.sqrt(self.adagrads_sum[w_name])
+            W_step =  eta / np.sqrt(self.adagrads_sum[w_name])
             W -= W_step * dW
 
 
