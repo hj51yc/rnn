@@ -100,7 +100,10 @@ class LSTM(object):
 
     def grad_clip(self, dw, rescale=5.0):
         norm = np.sum(np.abs(dw))
-        return dw / norm
+        if norm > rescale:
+            return dw * (rescale / norm)
+        else:
+            return dw
 
     def backward(self, prob, y_label, d_next, cache):
         hi, hf, ho, hc, h, c, y, c_prev, h_prev, X = cache
@@ -175,6 +178,8 @@ class LSTM(object):
         #print 'the dc_next', new_dc_next
 
         grad = dict(Wf=dWf, Wi=dWi, Wo=dWo, Wc=dWc, bf=dbf, bi=dbi, bc=dbc, bo=dbo, by=dby)
+        for key in grad:
+            grad[key] = self.grad_clip(grad[key])
         new_d_next = (new_dh_next, new_dc_next) 
 
         return new_d_next, grad

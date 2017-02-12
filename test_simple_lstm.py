@@ -59,7 +59,7 @@ def train_model():
     print 'y_data example:', train_y_datas[0]
 
     x_dim = len(train_x_datas[0][0])
-    hidden_num = 300
+    hidden_num = 100
     out_dim = x_dim
     lstm = LSTM(x_dim, hidden_num, out_dim, 0.5, 1.0e-8)
 
