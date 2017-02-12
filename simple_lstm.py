@@ -5,7 +5,7 @@ import numpy as np
 def sigmoid(a):
     return 1.0/(1+np.exp(-a))
 
-def dev_sigmoid(a):
+def dsigmoid(a):
     return a*(1-a)
 
 def tanh(a):
@@ -20,14 +20,29 @@ def softmax(y):
     final = p / s
     return final
 
+
+def cross_entropy(prob, y_true):
+    log_prob_neg = np.log(1 - prob)
+    log_prob = np.log(prob)
+    y_true_neg = 1 - y_true
+    return -(np.sum(log_prob_neg * y_true_neg) + np.sum(log_prob * y_true))
+
+
+##simple LSTM: N blocks with one cell in every block!
 class LSTM(object):
-"""
-    simple LSTM: N blocks with one cell in every block!
-"""
-    def __init__(self, x_dim, hiden_num,  output_dim):
+
+    def __init__(self, x_dim, hidden_num, output_dim, eta, epsilon):
+        self.eta = eta
+        self.epsilon = epsilon
+        self.adagrads_sum = {}
+
         ## concate input as [h, x]
-        Z = x_dim + hiden_num
-        H = hiden_num
+        Z = x_dim + hidden_num
+        H = hidden_num
+        D = output_dim
+        self.Z = Z
+        self.H = H
+        self.D = D
         self.Wi = np.random.randn(Z, H) / np.sqrt(Z / 2.)
         self.bi = np.zeros((1, H))
         self.Wf = np.random.randn(Z, H) / np.sqrt(Z / 2.)
@@ -37,46 +52,79 @@ class LSTM(object):
         self.Wc = np.random.randn(Z, H) / np.sqrt(Z / 2.)
         self.bc = np.zeros((1, H))
 
-        self.Wy = np.random.randn((H, D)) / np.sqrt(D / 2.0)
+        self.Wy = np.random.randn(H, D) / np.sqrt(D / 2.0)
         self.by = np.zeros((1, D))
 
     
+    def greedy_forward(self, x_seq_start, state_init, stop_indexes, stop_len):
+        state = state_init
+        for x in x_seq_start:
+            prob, state, cache = self.forward(x, state)
+        
+        gen_indexes = []
+        for k in xrange(stop_len):
+            index = np.random.choice(range(len(prob[0])), p=prob.ravel())
+            #index = np.argmax(prob[0])
+            gen_x = np.zeros(len(prob[0]))
+            gen_x[index] = 1
+            gen_indexes.append(index)
+            if index in stop_indexes:
+                break
+            prob, state, cache = self.forward(gen_x, state)
+        return gen_indexes
+
+
     def forward(self, x, state):
-        c_prev, h_prev = state
-        X = np.column_stack((h_prev, x))
+        h_prev, c_prev = state
+        
+        #X = np.column_stack((h_prev, x))
+        #print 'x:', x
+        #print 'h_prev:', h_prev
+        X = np.hstack((h_prev, x.reshape(1, len(x))))
         
         hi = sigmoid(np.dot(X, self.Wi) + self.bi)
         hf = sigmoid(np.dot(X, self.Wf) + self.bf)
-        ho = sigmoid(np.dot(X, self.wo) + self.bo)
+        ho = sigmoid(np.dot(X, self.Wo) + self.bo)
         
         hc = tanh(np.dot(X, self.Wc) + self.bc)
         c = hf * c_prev + hi * hc
         h = ho * tanh(c)
 
         y = np.dot(h, self.Wy) + self.by
-        prop = softmax(y)
-        cache = (hi, hf, ho, hc, c, h, y, c_prev, h_prev, X)
-        return prop, cache
+        prob = softmax(y)
+        cache = (hi, hf, ho, hc, h, c, y, c_prev, h_prev, X)
+        state = (h, c)
+        return prob, state, cache
 
 
-    def backward(self, prob, y_label, d_next, cache)
-        hi, hf, ho, hc, c, h, y, c_prev, h_prev, X = cache
-        dc_next, dh_next = dnext
+    def backward(self, prob, y_label, d_next, cache):
+        hi, hf, ho, hc, h, c, y, c_prev, h_prev, X = cache
+        dc_next, dh_next = d_next
 
         ## softmax loss gradient
         dy = prob.copy()
-        dy[1, y_label] -= 1
+
+        #print 'dy:', dy
+        #print 'y_label', y_label
+
+        y_index = np.argmax(y_label)
+        dy[0, y_index] -= 1
 
         dWy = np.dot(h.T, dy)
         dby = dy
-
+        
+        # Note we're adding dh_next here, because h is forward in next_step and make output y here: h is splited here!
         dh = np.dot(dy, self.Wy.T) + dh_next
         
         dho = tanh(c) * dh
         dho = dsigmoid(ho) * dho
-
-        dc = ho * dh + dc_next
-        dc = dtanh(c) * dc
+        
+        # Gradient for c in h = ho * tanh(c), note we're adding dc_next here! 
+        #dc = ho * dh + dc_next
+        #dc = dtanh(c) * dc
+        
+        ## i change dc below
+        dc = dh * ho * dtanh(c) + dc_next
 
         dhc = hi * dc
         dhc = dhc * dtanh(hc)
@@ -104,7 +152,7 @@ class LSTM(object):
         dXc = np.dot(dbc, self.Wc.T)
 
         dX = dXf + dXi + dXo + dXc
-        new_dh_next = dX[:, :H]
+        new_dh_next = dX[:, :self.H]
         
         # Gradient for c_old in c = hf * c_old + hi * hc
         new_dc_next = hf * dc
@@ -115,13 +163,6 @@ class LSTM(object):
         return new_d_next, grad
 
     
-    def cross_entropy(self, prob, y_true):
-        log_prob_neg = np.log(1 - prob)
-        log_prob = np.log(prob)
-
-        y_true_neg = 1 - y_true
-
-        return np.sum(log_prob_neg * y_true_neg) + np.sum(log_prob * y_true)
 
     def train_step(self, x_seq, y_seq, state):
         probs = []
@@ -130,18 +171,18 @@ class LSTM(object):
         h, c = state
 
         for x, y in zip(x_seq, y_seq):
-            prob, cache = self.forward(x, state)
+            prob, state, cache = self.forward(x, state)
             probs.append(prob)
             caches.append(cache)
-            loss += cross_entropy(prob, y_true)
+            loss += cross_entropy(prob, y)
             
-        loss /= len(x_seq.shape[0])
+        loss /= len(x_seq[0])
         
         d_next = (np.zeros_like(h), np.zeros_like(c))
         grads = {}
 
-        for prob, y_true, cache in reverse(list(zips(probs, y_seq, caches))):
-            d_next, cur_grads = self.backward(prob, y_true, cache)
+        for prob, y_true, cache in reversed(list(zip(probs, y_seq, caches))):
+            d_next, cur_grads = self.backward(prob, y_true, d_next, cache)
             for key in cur_grads:
                 if key not in grads:
                     grads[key] = cur_grads[key]
@@ -152,15 +193,22 @@ class LSTM(object):
 
     
     def adagrad(self, grads, eta, epsilon):
+        
         for w_name in grads:
             W = getattr(self, w_name)
             dW = grads[w_name]
+            square_dW = dW * dW
             if w_name in self.adagrads_sum:
-                self.adagrads_sum[w_name] += dW * dW
+                self.adagrads_sum[w_name] += square_dW
             else:
-                self.adagrads_sum[w_name] = dW * dW + epsilon
+                self.adagrads_sum[w_name] = square_dW + epsilon
 
-            W_step = eta / np.sqrt(self.adagrads[w_name])
+            W_step = eta / np.sqrt(self.adagrads_sum[w_name])
             W -= W_step * dW
 
-            
+
+    def train_once(self, x_seq, y_seq, state):
+        grads, loss, state = self.train_step(x_seq, y_seq, state)
+        self.adagrad(grads, self.eta, self.epsilon)
+        return loss, state
+
