@@ -59,7 +59,7 @@ def train_model():
     print 'y_data example:', train_y_datas[0]
 
     x_dim = len(train_x_datas[0][0])
-    hidden_num = 50
+    hidden_num = 300
     out_dim = x_dim
     lstm = LSTM(x_dim, hidden_num, out_dim, 0.5, 1.0e-8)
 
@@ -83,11 +83,11 @@ def train_model():
             y_seq = train_y_datas[j]
             loss, state = lstm.train_once(x_seq, y_seq, init_state)
             #loss, state = lstm.train_once(x_seq, y_seq, state)
-            if k % 10 == 0:
+            if k % 100 == 0:
                 print 'k', k, 'loss', loss
                 print 'cost_time:', int(time.time()) - now
                 now = int(time.time())
-            if k % 100 == 0:
+            if k % 500 == 0:
                 print "iter", i, "loss:", loss
                 test_gen(lstm, x_test_seq, init_state, stop_indexes) 
 
