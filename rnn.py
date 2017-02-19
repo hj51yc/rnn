@@ -1,6 +1,11 @@
 import numpy as np
 import sys, os
 
+'''
+@author: huangjin (Jeff)
+@email: hj51yc@gmail.com
+Simple RNN
+'''
 
 def sigmoid(a):
     return 1.0/(1+np.exp(-a))
